@@ -97,7 +97,7 @@ options = ['Home','A, gene regulatory network (including TF, miRNA, and mRNA) (t
         "B, mRNA (protein)-mRNA (protein) interaction (transcriptome or proteome)",
         "C, metabolic network (including enzyme, mRNA, and metabolite) (transcriptome and metabolome (organ or cell))", 
         "D, metabolite exchange network (including transporter, mRNA, and metabolite) (transcriptome, metabolome (organ or cell) and metabolome (blood or medium))"]
-selected_option = st.sidebar.radio('*"TF/miRNA-mRNA" takes several minutes',options, key="2")
+selected_option = st.sidebar.radio('*"gene regulatory network" takes more than ten minutes',options, key="2")
 
 st.sidebar.subheader('3, Set parameters')
 options = ['cyan','blue','green','red','magenta','yellow','black','white']
@@ -172,6 +172,7 @@ if selected_option=="A, gene regulatory network (including TF, miRNA, and mRNA) 
         miRNAmRNA1.rename(columns={'miRNA': 'Regulator'}, inplace=True)
         miRNAmRNA1.rename(columns={'Name': 'mRNA'}, inplace=True)
         del miRNA
+        del Name
         del Tran2
         gc.collect()
                 
@@ -413,6 +414,7 @@ if selected_option=="B, mRNA (protein)-mRNA (protein) interaction (transcriptome
         DEP_Down=DEP3[(DEP3['FC_x'] =="Down") & (DEP3['FC_y'] =="Down")]
         del DEP
         del DEP3
+        del Name
         gc.collect()
                 
         #Network_Dat
@@ -665,7 +667,7 @@ if selected_option=="B, mRNA (protein)-mRNA (protein) interaction (transcriptome
         Pk10=pd.DataFrame([x1,y1]).T.rename(columns={0: 'k'}).rename(columns={1: 'P(k)'})
         Pk11=Pk10[Pk10["k"]>0]
         Pk12=Pk11[Pk11["P(k)"]>0]
-        
+        del Name
         del DEP3
         del PPI
         gc.collect()
