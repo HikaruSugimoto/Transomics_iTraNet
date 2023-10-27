@@ -1,0 +1,2 @@
+Threshold, Threshold for statistical significance values calculated by MACS2 in estimating TF; FDR, False discovery rate in estimating TF. TF enrichment analysis was performed by the one-tailed Fisher’s exact test followed by Benjamini-Hochberg method.
+

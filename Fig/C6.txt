@@ -1,0 +1,1 @@
+Degree centrality, degree, and adjacent nodes of each node for the trans-omics network consisting of only differentially regulated reactions. 

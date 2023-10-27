@@ -1,0 +1,1 @@
+Density, clustering coefficient, assortativity, and mean degree of the increased mRNA-mRNA (protein-protein) interactions network.

@@ -1,0 +1,1 @@
+The percentage of differentially regulated metabolic reactions by Metabolite and by Enzyme mRNA are plotted for each metabolic pathway. The size of the dots indicates the number of differentially regulated metabolic reactions in each metabolic pathway.

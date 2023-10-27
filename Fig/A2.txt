@@ -1,0 +1,1 @@
+The trans-omics network for differentially expressed mRNAs and associated transcription factors and miRNAs. Nodes and edges indicate differentially expressed molecules and differential regulations, respectively. I, the number of increased molecules; D, the number of decreased molecules. The interactive network is depicted in the panel below.

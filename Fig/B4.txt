@@ -1,0 +1,1 @@
+Decreased mRNAs and associated mRNAs. Protein-protein interactions corresponding to each mRNA were estimated using STRING (https://string-db.org/cgi/download?sessionId=b7GipzHI6zXz).

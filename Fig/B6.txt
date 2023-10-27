@@ -1,0 +1,2 @@
+mRNA-mRNA (protein-protein) interaction network for the decreased mRNAs.
+

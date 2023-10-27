@@ -1,0 +1,1 @@
+List of nodes forming loops in the trans-omics network consisting of only differentially regulated reactions. 

@@ -1,0 +1,1 @@
+Degree distributions with fitted regression lines for the trans-omics network. N(k) represents the number of nodes in the network with k connections to other nodes. Gray, the degree distribution for the network consisting of all regulations in the TCDB; Black, the degree distribution for the network consisting of only differentially regulated reactions. 

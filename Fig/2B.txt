@@ -1,0 +1,1 @@
+“B, mRNA (protein)-mRNA (protein) interaction” estimates mRNAs (proteins) associated with the uploaded transcriptome (proteome) data (organ or cell). The association is based on protein-protein interactions and is estimated using STRING (https://string-db.org/cgi/download?sessionId=b7GipzHI6zXz). 

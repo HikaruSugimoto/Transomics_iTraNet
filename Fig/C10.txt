@@ -1,0 +1,1 @@
+The number of differentially regulated metabolic reactions regulated by the differentially expressed molecules in the Metabolite layer, Enzyme mRNA layer, or both.

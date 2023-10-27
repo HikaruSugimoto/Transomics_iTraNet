@@ -1,0 +1,2 @@
+Increased proteins and associated proteins. Protein-protein interactions were estimated using STRING (https://string-db.org/cgi/download?sessionId=b7GipzHI6zXz). 
+

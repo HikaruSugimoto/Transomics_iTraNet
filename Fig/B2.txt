@@ -1,0 +1,2 @@
+Degree distributions with fitted regression lines for the increased mRNA-mRNA (protein-protein) interactions network. N(k) represents the number of nodes in the network with k connections to other nodes. 
+

@@ -1,0 +1,2 @@
+“D, metabolite exchange network (including transporter, mRNA, and metabolite)” estimates transporters associated with the uploaded transcriptome (organ or cell), metabolome data (organ or cell) and metabolome (blood or medium) data. Transporters are assumed to be affected by the amount of metabolites and regulations by changing the amount of transporter gene expression. This inference draws from an analysis of data from The Transporter Classification Database (TCDB) (https://www.tcdb.org/).
+
