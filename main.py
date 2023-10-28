@@ -1594,12 +1594,13 @@ if selected_option=="D, metabolite exchange network (including transporter, mRNA
         Meta_Old = Meta1.copy()
         Meta_blood_Old=Meta_blood.copy()
 
+        #Database
         Name=pd.read_csv("./Database/230228Molecule2Name.csv")
         #CPD=pd.read_csv("./Database/230228CPD2Transporter.csv")
         ENSMUSG=pd.read_csv("./Database/230228ENSMUSG2Transporter.csv")
         CPDA=pd.read_csv("./Database/MetabolomeTable_AdditionalID.csv")
         Family=pd.read_csv("./Database/230228TransporterFamily.csv")
-
+        
         #CPD duplicate
         CPDA1=pd.merge(Meta, CPDA, on='CPD', how='inner')
         CPDA1=CPDA1[["CPD1","FC"]]
@@ -1631,7 +1632,9 @@ if selected_option=="D, metabolite exchange network (including transporter, mRNA
         ALL=ALL.reset_index(drop=True)
         Num=pd.DataFrame(ALL["Transporter"].value_counts()).reset_index().rename(columns={'Transporter': 'Total_number'})
         Num=Num.rename(columns={'index': 'Transporter'})
-
+        
+        del Name
+        gc.collect()
         #Transporter-MetaboliteTranscript
         OrganMeta_Num=pd.DataFrame(OrganMeta["Transporter"].value_counts()).reset_index().rename(columns={'Transporter': 'OrganMeta_number'})
         OrganMeta_Num=OrganMeta_Num.rename(columns={'index': 'Transporter'})
@@ -1644,6 +1647,10 @@ if selected_option=="D, metabolite exchange network (including transporter, mRNA
         OrganTran_Num=pd.DataFrame(OrganTran["Transporter"].value_counts()).reset_index().rename(columns={'Transporter': 'OrganTran_number'})
         OrganTran_Num=OrganTran_Num.rename(columns={'index': 'Transporter'})
         Num=pd.merge(Num,OrganTran_Num,  on='Transporter', how='outer').fillna({'OrganTran_number': 0})
+        del OrganMeta
+        del BloodMeta
+        del OrganTran
+        gc.collect()
 
         #Organ_Metabolite
         Regul="Organ"
@@ -1708,7 +1715,8 @@ if selected_option=="D, metabolite exchange network (including transporter, mRNA
         Num=pd.merge(ENSMUSG2,Num, on='Transporter', how='inner')
         Num=Num.sort_values('Total_number', ascending=False)
         st.write(Num.set_index('Transporter'))
-        
+        del Family
+        gc.collect()        
         f=open('./Fig/D1.txt', 'r')
         st.write(f.read())    
         
@@ -1917,6 +1925,7 @@ if selected_option=="D, metabolite exchange network (including transporter, mRNA
             st.download_button(label = "Download transporter data",data = file,file_name = "Transporter.zip")
         del ALL
         gc.collect()
+        '''
         #Upload
         degree1 = list(dict(nx.degree(G1)).values())
         x1 = [i for i in range(max(degree1)+1)]
@@ -1990,7 +1999,7 @@ if selected_option=="D, metabolite exchange network (including transporter, mRNA
         del CPDA1
         gc.collect()
         #st.stop()
-        
+        '''
         current_variables = list(globals().keys())
         exclude_list = ['current_variables', 'exclude_list','selected_option']
         variables_to_delete = [var for var in current_variables if var not in exclude_list]
