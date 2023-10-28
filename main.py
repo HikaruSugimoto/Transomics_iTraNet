@@ -1633,8 +1633,6 @@ if selected_option=="D, metabolite exchange network (including transporter, mRNA
         Num=pd.DataFrame(ALL["Transporter"].value_counts()).reset_index().rename(columns={'Transporter': 'Total_number'})
         Num=Num.rename(columns={'index': 'Transporter'})
         
-        del Name
-        gc.collect()
         #Transporter-MetaboliteTranscript
         OrganMeta_Num=pd.DataFrame(OrganMeta["Transporter"].value_counts()).reset_index().rename(columns={'Transporter': 'OrganMeta_number'})
         OrganMeta_Num=OrganMeta_Num.rename(columns={'index': 'Transporter'})
@@ -1716,6 +1714,7 @@ if selected_option=="D, metabolite exchange network (including transporter, mRNA
         Num=Num.sort_values('Total_number', ascending=False)
         st.write(Num.set_index('Transporter'))
         del Family
+        del Name
         gc.collect()        
         f=open('./Fig/D1.txt', 'r')
         st.write(f.read())    
@@ -1925,81 +1924,81 @@ if selected_option=="D, metabolite exchange network (including transporter, mRNA
             st.download_button(label = "Download transporter data",data = file,file_name = "Transporter.zip")
         del ALL
         gc.collect()
-        '''
+        
         #Upload
-        degree1 = list(dict(nx.degree(G1)).values())
-        x1 = [i for i in range(max(degree1)+1)]
-        y1 = [degree1.count(i) for i in x1]
-        Pk10=pd.DataFrame([x1,y1]).T.rename(columns={0: 'k'}).rename(columns={1: 'P(k)'})
-        Pk11=Pk10[Pk10["k"]>0]
-        Pk12=Pk11[Pk11["P(k)"]>0]
+        #degree1 = list(dict(nx.degree(G1)).values())
+        #x1 = [i for i in range(max(degree1)+1)]
+        #y1 = [degree1.count(i) for i in x1]
+        #Pk10=pd.DataFrame([x1,y1]).T.rename(columns={0: 'k'}).rename(columns={1: 'P(k)'})
+        #Pk11=Pk10[Pk10["k"]>0]
+        #Pk12=Pk11[Pk11["P(k)"]>0]
 
         #Database
-        CPD1=pd.read_csv("./Database/230228CPD2Transporter.csv")
-        CPD1["CPD"]='Organ_' + CPD1['CPD'].astype(str)
-        CPD1=pd.concat([pd.read_csv("./Database/230228CPD2Transporter.csv"),CPD1])
-        CPD1=CPD1.rename(columns={'CPD': 'Molecule'})
-        CPD1=pd.concat([CPD1,ENSMUSG])
+        #CPD1=pd.read_csv("./Database/230228CPD2Transporter.csv")
+        #CPD1["CPD"]='Organ_' + CPD1['CPD'].astype(str)
+        #CPD1=pd.concat([pd.read_csv("./Database/230228CPD2Transporter.csv"),CPD1])
+        #CPD1=CPD1.rename(columns={'CPD': 'Molecule'})
+        #CPD1=pd.concat([CPD1,ENSMUSG])
 
-        Gd = nx.Graph()
-        Gd.add_nodes_from(CPD1["Molecule"].unique())
-        Gd.add_nodes_from(CPD1["Transporter"].unique())
-        edge_lists=[tuple(x) for x in CPD1[["Molecule","Transporter"]].values]
-        Gd.add_edges_from(edge_lists)
-        degree = list(dict(nx.degree(Gd)).values())
-        x = [i for i in range(max(degree)+1)]
-        y = [degree.count(i) for i in x]
-        Pk=pd.DataFrame([x,y]).T.rename(columns={0: 'k'}).rename(columns={1: 'P(k)'})
-        Pk1=Pk[Pk["k"]>0]
-        Pk2=Pk1[Pk1["P(k)"]>0]
+        #Gd = nx.Graph()
+        #Gd.add_nodes_from(CPD1["Molecule"].unique())
+        #Gd.add_nodes_from(CPD1["Transporter"].unique())
+        #edge_lists=[tuple(x) for x in CPD1[["Molecule","Transporter"]].values]
+        #Gd.add_edges_from(edge_lists)
+        #degree = list(dict(nx.degree(Gd)).values())
+        #x = [i for i in range(max(degree)+1)]
+        #y = [degree.count(i) for i in x]
+        #Pk=pd.DataFrame([x,y]).T.rename(columns={0: 'k'}).rename(columns={1: 'P(k)'})
+        #Pk1=Pk[Pk["k"]>0]
+        #Pk2=Pk1[Pk1["P(k)"]>0]
 
-        st.write(pd.DataFrame(data=np.array([[nx.density(Gd),nx.degree_pearson_correlation_coefficient(Gd,0),np.mean(degree)],
-                        [nx.density(G1),nx.degree_pearson_correlation_coefficient(G1,0),np.mean(degree1)]]),
-                    index=['Database', 'Uploaded data'],columns=['Density', 'Assortativity','Mean degree']))
-        f=open('./Fig/D4.txt', 'r')
-        st.write(f.read())   
+        #st.write(pd.DataFrame(data=np.array([[nx.density(Gd),nx.degree_pearson_correlation_coefficient(Gd,0),np.mean(degree)],
+        #                [nx.density(G1),nx.degree_pearson_correlation_coefficient(G1,0),np.mean(degree1)]]),
+        #            index=['Database', 'Uploaded data'],columns=['Density', 'Assortativity','Mean degree']))
+        #f=open('./Fig/D4.txt', 'r')
+        #st.write(f.read())   
         
-        fig, ax = plt.subplots(figsize=(2, 2))
+        #fig, ax = plt.subplots(figsize=(2, 2))
         #Dat
-        df_X =np.log10(Pk2["k"])
-        df_y =np.log10(Pk2["P(k)"])
-        color="gray"
-        ax.scatter(df_X, df_y,c=color,s=1)
-        x=np.arange(0, np.max(df_X),0.1)
-        df_X = sm.add_constant(df_X)
-        model = sm.OLS(df_y, df_X)
-        result = model.fit()
-        ax.plot(x,result.params["k"]*x+result.params["const"],c=color,
-                label="Database:"+str(-result.params["k"])[0:4]+" ("+str(-result.conf_int(alpha=0.05).T["k"][1])[0:4]+" - "+str(-result.conf_int(alpha=0.05).T["k"][0])[0:4]+")")
+        #df_X =np.log10(Pk2["k"])
+        #df_y =np.log10(Pk2["P(k)"])
+        #color="gray"
+        #ax.scatter(df_X, df_y,c=color,s=1)
+        #x=np.arange(0, np.max(df_X),0.1)
+        #df_X = sm.add_constant(df_X)
+        #model = sm.OLS(df_y, df_X)
+        #result = model.fit()
+        #ax.plot(x,result.params["k"]*x+result.params["const"],c=color,
+        #        label="Database:"+str(-result.params["k"])[0:4]+" ("+str(-result.conf_int(alpha=0.05).T["k"][1])[0:4]+" - "+str(-result.conf_int(alpha=0.05).T["k"][0])[0:4]+")")
 
         #Upload
-        df_X =np.log10(Pk12["k"])
-        df_y =np.log10(Pk12["P(k)"])
-        color="black"
-        ax.scatter(df_X, df_y,c=color,s=1)
-        x=np.arange(0, np.max(df_X),0.1)
-        df_X = sm.add_constant(df_X)
-        model = sm.OLS(df_y, df_X)
-        result = model.fit()
-        ax.plot(x,result.params["k"]*x+result.params["const"],c=color,
-                label="Upload:"+str(-result.params["k"])[0:4]+" ("+str(-result.conf_int(alpha=0.05).T["k"][1])[0:4]+" - "+str(-result.conf_int(alpha=0.05).T["k"][0])[0:4]+")")
+        #df_X =np.log10(Pk12["k"])
+        #df_y =np.log10(Pk12["P(k)"])
+        #color="black"
+        #ax.scatter(df_X, df_y,c=color,s=1)
+        #x=np.arange(0, np.max(df_X),0.1)
+        #df_X = sm.add_constant(df_X)
+        #model = sm.OLS(df_y, df_X)
+        #result = model.fit()
+        #ax.plot(x,result.params["k"]*x+result.params["const"],c=color,
+        #        label="Upload:"+str(-result.params["k"])[0:4]+" ("+str(-result.conf_int(alpha=0.05).T["k"][1])[0:4]+" - "+str(-result.conf_int(alpha=0.05).T["k"][0])[0:4]+")")
 
 
 
         #ax.set_xscale('log')
         #ax.set_yscale('log')
-        ax.set_xlabel("log"+"${_1}$"+"${_0}$"+"k")
-        ax.set_ylabel("log"+"${_1}$"+"${_0}$"+"N(k)")
-        ax.legend(bbox_to_anchor=(2.5, 0.5), loc="upper right",fontsize=8)
-        st.pyplot(fig) 
+        #ax.set_xlabel("log"+"${_1}$"+"${_0}$"+"k")
+        #ax.set_ylabel("log"+"${_1}$"+"${_0}$"+"N(k)")
+        #ax.legend(bbox_to_anchor=(2.5, 0.5), loc="upper right",fontsize=8)
+        #st.pyplot(fig) 
         
-        f=open('./Fig/D5.txt', 'r')
-        st.write(f.read())
-        del CPD1
-        del CPDA1
-        gc.collect()
+        #f=open('./Fig/D5.txt', 'r')
+        #st.write(f.read())
+        #del CPD1
+        #del CPDA1
+        #gc.collect()
         #st.stop()
-        '''
+        
         current_variables = list(globals().keys())
         exclude_list = ['current_variables', 'exclude_list','selected_option']
         variables_to_delete = [var for var in current_variables if var not in exclude_list]
