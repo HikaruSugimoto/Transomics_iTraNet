@@ -383,6 +383,16 @@ if selected_option=="A, gene regulatory network (including TF, miRNA, and mRNA) 
         del TFmiRNAmRNA
         del TFmiRNAmRNA1
         gc.collect()  
+        
+        current_variables = list(globals().keys())
+        exclude_list = ['current_variables', 'exclude_list','selected_option']
+        variables_to_delete = [var for var in current_variables if var not in exclude_list]
+
+        for var_name in variables_to_delete:
+            del globals()[var_name]
+        import gc
+        gc.collect()            
+        
     else:
         st.write("Please upload transciptome data (organ or cell).")
 
@@ -642,7 +652,6 @@ if selected_option=="B, mRNA (protein)-mRNA (protein) interaction (transcriptome
                             Decreased_output.to_csv(index=True))                
         with open("mRNA-mRNA.zip", "rb") as file: 
             st.download_button(label = "Download mRNA-mRNA data",data = file,file_name = "mRNA-mRNA.zip")
-            
     if Pro is not None:
         st.subheader('B, Protein-protein interaction')
         #Database
@@ -884,6 +893,14 @@ if selected_option=="B, mRNA (protein)-mRNA (protein) interaction (transcriptome
                             Decreased_output.to_csv(index=True))                
         with open("protein-protein.zip", "rb") as file: 
             st.download_button(label = "Download protein-protein data",data = file,file_name = "protein-protein.zip")              
+        current_variables = list(globals().keys())
+        exclude_list = ['current_variables', 'exclude_list','selected_option']
+        variables_to_delete = [var for var in current_variables if var not in exclude_list]
+
+        for var_name in variables_to_delete:
+            del globals()[var_name]
+        import gc
+        gc.collect()    
     else:
         st.write("Please upload transciptome or proteome data (organ or cell).")
 
@@ -905,7 +922,7 @@ if selected_option=="C, metabolic network (including enzyme, mRNA, and metabolit
         #Database
         BRENDA= pd.read_csv("./Database/230228Metabolite2reaction_BRENDA.csv")
         Meta_KEGG= pd.read_csv("./Database/230228Metabolite2reaction_KEGG.csv")
-        Meta_KEGG2= pd.read_csv("./Database/230228Metabolite2reaction_KEGG.csv")
+        #Meta_KEGG2= pd.read_csv("./Database/230228Metabolite2reaction_KEGG.csv")
         Tran_KEGG= pd.read_csv("./Database/230228Transcript2reaction_KEGG.csv")
         Species=pd.read_csv("./Database/230228MMU.csv")
         Name=pd.read_csv("./Database/230228Molecule2Name.csv")
@@ -1049,6 +1066,12 @@ if selected_option=="C, metabolic network (including enzyme, mRNA, and metabolit
                                 [Product_act, Product_inh], [Allo_inc_AC, Allo_dec_AC], [Allo_inc_IN, Allo_dec_IN]],
                                 columns=['Increased', 'decreased'],index=['Enzyme gene expression', 'Substrate', 'Product','Allosteric AC','Allosteric IN'])
         #display(Regulation)
+        del A
+        del A1
+        del AA
+        del Num
+        gc.collect()        
+        
         #Network
         fig = plt.figure(figsize=(12,8),facecolor='black')
         ax1 = fig.add_subplot(111, projection='3d')
@@ -1057,7 +1080,7 @@ if selected_option=="C, metabolic network (including enzyme, mRNA, and metabolit
         G1.add_nodes_from(ALL[ALL["Regulation"]=="Transcript"]["Molecule"].unique())
         G1.add_nodes_from(ALL[ALL["Regulation"]!="Transcript"]["Molecule"].unique())
         G1.add_nodes_from(ALL["Enzyme"].unique())
-        edge_lists=[tuple(x) for x in ALL.iloc[:,[2,3]].values]
+        edge_lists=[tuple(x) for x in ALL[["Enzyme","Molecule"]].values]
         G1.add_edges_from(edge_lists)
 
         pos = {}
@@ -1237,6 +1260,7 @@ if selected_option=="C, metabolic network (including enzyme, mRNA, and metabolit
         st.pyplot(fig)
         f=open('./Fig/C4.txt', 'r')
         st.write(f.read())
+        G1 = nx.Graph()
         
         ##Network analysis
         Database_ALL=pd.concat([BRENDA.rename(columns={'CPD': 'Molecule'}),
@@ -1246,7 +1270,7 @@ if selected_option=="C, metabolic network (including enzyme, mRNA, and metabolit
         G = nx.Graph()
         G.add_nodes_from(Database_ALL["Molecule"].unique(), bipartite=0)
         G.add_nodes_from(Database_ALL["Enzyme"].unique(), bipartite=1)
-        edge_lists=[tuple(x) for x in Database_ALL.iloc[:,[2,3]].values]
+        edge_lists=[tuple(x) for x in Database_ALL[["Enzyme","Molecule"]].values]
         G.add_edges_from(edge_lists)
         Centrality=pd.DataFrame([nx.degree_centrality(G)]).T.rename(columns={0: 'Database_Degree centrality'})
         Centrality1=pd.DataFrame(index=Centrality.index,columns=['Database_Degree centrality',
@@ -1266,6 +1290,7 @@ if selected_option=="C, metabolic network (including enzyme, mRNA, and metabolit
         Pk1=Pk[Pk["k"]>0]
         Pk2=Pk1[Pk1["P(k)"]>0]
         del BRENDA
+        del Meta_KEGG
         del Output_ALL1
         del Database_ALL
         gc.collect() 
@@ -1274,7 +1299,7 @@ if selected_option=="C, metabolic network (including enzyme, mRNA, and metabolit
         G1 = nx.Graph()
         G1.add_nodes_from(ALL["Name"].unique(), bipartite=0)
         G1.add_nodes_from(ALL["Enzyme"].unique(), bipartite=1)
-        edge_lists=[tuple(x) for x in ALL.iloc[:,[2,7]].values]
+        edge_lists=[tuple(x) for x in ALL[["Enzyme","Name"]].values]
         G1.add_edges_from(edge_lists)
         Centrality=pd.DataFrame([nx.degree_centrality(G1)]).T.rename(columns={0: 'Uploaded_Degree centrality'})
 
@@ -1336,19 +1361,21 @@ if selected_option=="C, metabolic network (including enzyme, mRNA, and metabolit
         st.pyplot(fig)
         f=open('./Fig/C8.txt', 'r')
         st.write(f.read())
-        
+        G = nx.Graph()
+        G1 = nx.Graph()
         #Loop
         G2 = nx.Graph()
         G2.add_nodes_from(ALL["Name"].unique(), bipartite=0)
         G2.add_nodes_from(ALL["Enzyme"].unique(), bipartite=1)
-        edge_lists=[tuple(x) for x in ALL.iloc[:,[2,7]].values]
+        edge_lists=[tuple(x) for x in ALL[["Enzyme","Name"]].values]
         G2.add_edges_from(edge_lists)
         ALL_L=pd.DataFrame(nx.cycle_basis(G2.to_undirected()))
         st.write(ALL_L)
         output3=ALL_L.copy()
         f=open('./Fig/C9.txt', 'r')
         st.write(f.read())
-                
+        del ALL_L
+        gc.collect()                
         #Each pathway
         PathwayName = st.selectbox('Pathway:',MAP["MAP Name"].unique().tolist())
         i=np.where(MAP["MAP Name"].unique()==PathwayName)[0][0]
@@ -1363,6 +1390,7 @@ if selected_option=="C, metabolic network (including enzyme, mRNA, and metabolit
         #        root = ET.fromstring(kgml)
         #        with open('./xml/'+str(MAP["MAP Name"].unique()[i]).replace('/', '-')+'.xml', 'w') as f:
         #            f.write(ET.tostring(root, encoding='unicode'))
+        Meta_KEGG2= pd.read_csv("./Database/230228Metabolite2reaction_KEGG.csv")
         Tran_KEGG8=Tran_KEGG.copy()
         Tran_KEGG8["mmu"]="mmu:"+ Tran_KEGG8['mmu'].astype(str)
 
@@ -1530,8 +1558,17 @@ if selected_option=="C, metabolic network (including enzyme, mRNA, and metabolit
             with open("mRNAmetabolite-Enzyme.zip", "rb") as file: 
                 st.download_button(label = "Download mRNAmetabolite-Enzyme data",data = file,file_name = "mRNAmetabolite-Enzyme.zip")
         del Meta_KEGG2
-        del Meta_KEGG
+        #del Meta_KEGG
         del Tran_KEGG
+        gc.collect()
+        
+        current_variables = list(globals().keys())
+        exclude_list = ['current_variables', 'exclude_list','selected_option']
+        variables_to_delete = [var for var in current_variables if var not in exclude_list]
+
+        for var_name in variables_to_delete:
+            del globals()[var_name]
+        import gc
         gc.collect()    
     else:
         st.write("Please upload metabolome (organ or cell) and transciptome data (organ or cell).")
@@ -1550,7 +1587,9 @@ if selected_option=="D, metabolite exchange network (including transporter, mRNA
         if(os.path.isfile('mRNAmetabolite-Enzyme.zip')):
             os.remove('mRNAmetabolite-Enzyme.zip') 
         if(os.path.isfile('Transporter.zip')):
-            os.remove('Transporter.zip')  
+            os.remove('Transporter.zip')
+        
+        #Input  
         Meta = Meta1.copy()
         Meta_Old = Meta1.copy()
         Meta_blood_Old=Meta_blood.copy()
@@ -1950,7 +1989,16 @@ if selected_option=="D, metabolite exchange network (including transporter, mRNA
         del CPD1
         del CPDA1
         gc.collect()
-        st.stop()                       
+        #st.stop()
+        
+        current_variables = list(globals().keys())
+        exclude_list = ['current_variables', 'exclude_list','selected_option']
+        variables_to_delete = [var for var in current_variables if var not in exclude_list]
+
+        for var_name in variables_to_delete:
+            del globals()[var_name]
+        import gc
+        gc.collect()                         
     else:
         st.write("Please upload metabolome (organ or cell), metabolome (blood or medium) and transciptome data (organ or cell).")
         
