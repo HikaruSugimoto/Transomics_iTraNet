@@ -70,18 +70,22 @@ df_ref=st.sidebar.file_uploader("Option: background gene (for TF estimation)", t
 if Tran is not None:
     st.subheader('Uploaded transcriptome data (organ or cell)')
     Tran = pd.read_csv(Tran)
+    Tran=Tran.set_axis(['ENSMUSG', 'FC'], axis=1)
     st.write(Tran.set_index('ENSMUSG'))     
 if Pro is not None:
     st.subheader('Uploaded proteome data (organ or cell)')
     Pro = pd.read_csv(Pro)
+    Pro=Pro.set_axis(['ENSMUSP', 'FC'], axis=1)
     st.write(Pro.set_index('ENSMUSP'))      
 if Meta1 is not None:
     st.subheader('Uploaded metabolome data (organ or cell)')
     Meta1 =pd.read_csv(Meta1)
+    Meta1=Meta1.set_axis(['CPD', 'FC'], axis=1)
     st.write(Meta1.set_index('CPD'))        
 if Meta_blood is not None:
     st.subheader('Uploaded metabolome data (blood or medium)')
     Meta_blood =pd.read_csv(Meta_blood)
+    Meta_blood=Meta_blood.set_axis(['CPD', 'FC'], axis=1)
     st.write(Meta_blood.set_index('CPD'))
 if df_ref is not None:
     st.subheader('Uploaded background gene (for TF estimation)')
