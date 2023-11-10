@@ -422,6 +422,8 @@ if selected_option=="B, mRNA (protein)-mRNA (protein) interaction (transcriptome
         DEP3=pd.merge(DEP3, DEP.rename(columns={'ENSMUSP': 'protein2'}), on='protein2', how='inner',copy=False)
         DEP_UP=DEP3[(DEP3['FC_x'] =="UP") & (DEP3['FC_y'] =="UP")]
         DEP_Down=DEP3[(DEP3['FC_x'] =="Down") & (DEP3['FC_y'] =="Down")]
+        DEP_UP=DEP_UP.dropna()
+        DEP_Down=DEP_Down.dropna()
         del DEP
         del DEP3
         del Name
