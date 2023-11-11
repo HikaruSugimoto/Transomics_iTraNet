@@ -1582,7 +1582,7 @@ if selected_option=="C, metabolic network (including enzyme, mRNA, and metabolit
         
 if selected_option=="D, metabolite exchange network (including transporter, mRNA, and metabolite) (transcriptome, metabolome (organ or cell) and metabolome (blood or medium))":
     if Meta1 is not None and Meta_blood is not None and Tran is not None:
-        st.subheader('D, metabolic network (including transporter, mRNA, and metabolite)')
+        st.subheader('D, metabolite exchange network (including transporter, mRNA, and metabolite)')
         #Delete
         if(os.path.isfile('TFmiRNA-mRNA.zip')):
             os.remove('TFmiRNA-mRNA.zip')
