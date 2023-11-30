@@ -27,6 +27,7 @@ from matplotlib_venn import venn3
 from PIL import Image
 import statsmodels.api as sm
 import gc
+import base64
 #plt.rcParams['font.family']= 'sans-serif'
 #plt.rcParams['font.sans-serif'] = ['Arial']
 plt.rcParams['xtick.direction'] = 'out'
@@ -60,8 +61,15 @@ with zipfile.ZipFile('demo.zip', 'x') as csv_zip:
     csv_zip.writestr("Background gene.csv", 
                     pd.read_csv("./Database/RefGene.csv").dropna().reset_index(drop=True).to_csv(index=False))        
 with open("demo.zip", "rb") as file:
-    st.sidebar.download_button(label = "Download demo data",data = file,file_name = "demo.zip")
-
+    #st.sidebar.download_button(label = "Download demo data",data = file,file_name = "demo.zip")
+    zip_data = file.read()
+    b64 = base64.b64encode(zip_data).decode()
+    zip_filename = 'demo.zip'
+    href = f'<a href="data:application/zip;base64,{b64}" download="{zip_filename}">Download demo data</a>'
+    st.sidebar.markdown(href, unsafe_allow_html=True)
+if(os.path.isfile('demo.zip')):
+    os.remove('demo.zip')
+        
 Tran = st.sidebar.file_uploader("Transcriptome (organ or cell)", type="csv")
 Pro = st.sidebar.file_uploader("Proteome (organ or cell)", type="csv")
 Meta1 =st.sidebar.file_uploader("Metabolome (organ or cell)", type="csv")
@@ -287,8 +295,14 @@ if selected_option=="A, gene regulatory network (including TF, miRNA, and mRNA) 
             csv_zip.writestr("TFmiRNA-mRNA.csv",
                             TFmiRNAmRNAcopy.to_csv(index=False))
         with open("TFmiRNA-mRNA.zip", "rb") as file: 
-            st.download_button(label = "Download TFmiRNA-mRNA data",data = file,file_name = "TFmiRNA-mRNA.zip")        
-        
+            #st.download_button(label = "Download TFmiRNA-mRNA data",data = file,file_name = "TFmiRNA-mRNA.zip")        
+            zip_data = file.read()
+            b64 = base64.b64encode(zip_data).decode()
+            zip_filename = 'TFmiRNA-mRNA.zip'
+            href = f'<a href="data:application/zip;base64,{b64}" download="{zip_filename}">Download the results</a>'
+            st.markdown(href, unsafe_allow_html=True) 
+        if(os.path.isfile('TFmiRNA-mRNA.zip')):
+            os.remove('TFmiRNA-mRNA.zip')       
         del TFmiRNAmRNAcopy
         gc.collect()
         
@@ -385,8 +399,8 @@ if selected_option=="A, gene regulatory network (including TF, miRNA, and mRNA) 
         net.show("TFmiRNA-mRNA.html")
         HtmlFile = open("TFmiRNA-mRNA.html", 'r')
         components.html(HtmlFile.read(), height=900)
-        st.download_button(label="Download the interactice network",data=open("TFmiRNA-mRNA.html", 'r'),
-                        file_name="TFmiRNA-mRNA.html")
+        #st.download_button(label="Download the interactice network",data=open("TFmiRNA-mRNA.html", 'r'),
+        #                file_name="TFmiRNA-mRNA.html")
         G1 = nx.Graph()
         del TFmiRNAmRNA
         del TFmiRNAmRNA1
@@ -546,8 +560,8 @@ if selected_option=="B, mRNA (protein)-mRNA (protein) interaction (transcriptome
         net.show("Increased_PPI.html")
         HtmlFile = open("Increased_PPI.html", 'r')
         components.html(HtmlFile.read(), height=900)
-        st.download_button(label="Download the interactice network",data=open("Increased_PPI.html", 'r'),
-                        file_name="Increased_PPI.html")   
+        #st.download_button(label="Download the interactice network",data=open("Increased_PPI.html", 'r'),
+        #                file_name="Increased_PPI.html")   
         f=open('./Fig/B3.txt', 'r')
         st.write(f.read())    
         
@@ -647,8 +661,8 @@ if selected_option=="B, mRNA (protein)-mRNA (protein) interaction (transcriptome
         net.show("Decreased_PPI.html")
         HtmlFile = open("Decreased_PPI.html", 'r')
         components.html(HtmlFile.read(), height=900)
-        st.download_button(label="Download the interactice network",data=open("Decreased_PPI.html", 'r'),
-                        file_name="Decreased_PPI.html")      
+        #st.download_button(label="Download the interactice network",data=open("Decreased_PPI.html", 'r'),
+        #                file_name="Decreased_PPI.html")      
         Gd = nx.Graph()
         f=open('./Fig/B6.txt', 'r')
         st.write(f.read())
@@ -661,7 +675,15 @@ if selected_option=="B, mRNA (protein)-mRNA (protein) interaction (transcriptome
             csv_zip.writestr("Decreased_mRNA-mRNA.csv",
                             Decreased_output.to_csv(index=True))                
         with open("mRNA-mRNA.zip", "rb") as file: 
-            st.download_button(label = "Download mRNA-mRNA data",data = file,file_name = "mRNA-mRNA.zip")
+            #st.download_button(label = "Download mRNA-mRNA data",data = file,file_name = "mRNA-mRNA.zip")
+            zip_data = file.read()
+            b64 = base64.b64encode(zip_data).decode()
+            zip_filename = 'mRNA-mRNA.zip'
+            href = f'<a href="data:application/zip;base64,{b64}" download="{zip_filename}">Download the results</a>'
+            st.markdown(href, unsafe_allow_html=True)            
+        if(os.path.isfile('mRNA-mRNA.zip')):
+            os.remove('mRNA-mRNA.zip')   
+                        
     if Pro is not None:
         st.subheader('B, Protein-protein interaction')
         #Database
@@ -786,8 +808,8 @@ if selected_option=="B, mRNA (protein)-mRNA (protein) interaction (transcriptome
         net.show("Increased_PPI.html")
         HtmlFile = open("Increased_PPI.html", 'r')
         components.html(HtmlFile.read(), height=900)
-        st.download_button(label="Download the interactice network",data=open("Increased_PPI.html", 'r'),
-                        file_name="Increased_PPI.html")   
+        #st.download_button(label="Download the interactice network",data=open("Increased_PPI.html", 'r'),
+        #                file_name="Increased_PPI.html")   
         f=open('./Fig/B3.txt', 'r')
         st.write(f.read())    
         
@@ -887,8 +909,8 @@ if selected_option=="B, mRNA (protein)-mRNA (protein) interaction (transcriptome
         net.show("Decreased_PPI.html")
         HtmlFile = open("Decreased_PPI.html", 'r')
         components.html(HtmlFile.read(), height=900)
-        st.download_button(label="Download the interactice network",data=open("Decreased_PPI.html", 'r'),
-                        file_name="Decreased_PPI.html")      
+        #st.download_button(label="Download the interactice network",data=open("Decreased_PPI.html", 'r'),
+        #                file_name="Decreased_PPI.html")      
         
         f=open('./Fig/B6.txt', 'r')
         st.write(f.read())
@@ -902,7 +924,15 @@ if selected_option=="B, mRNA (protein)-mRNA (protein) interaction (transcriptome
             csv_zip.writestr("Decreased_protein-protein.csv",
                             Decreased_output.to_csv(index=True))                
         with open("protein-protein.zip", "rb") as file: 
-            st.download_button(label = "Download protein-protein data",data = file,file_name = "protein-protein.zip")              
+            #st.download_button(label = "Download protein-protein data",data = file,file_name = "protein-protein.zip")              
+            zip_data = file.read()
+            b64 = base64.b64encode(zip_data).decode()
+            zip_filename = 'protein-protein.zip'
+            href = f'<a href="data:application/zip;base64,{b64}" download="{zip_filename}">Download the results</a>'
+            st.markdown(href, unsafe_allow_html=True)       
+        if(os.path.isfile('protein-protein.zip')):
+            os.remove('protein-protein.zip')   
+                    
         current_variables = list(globals().keys())
         exclude_list = ['current_variables', 'exclude_list','selected_option']
         variables_to_delete = [var for var in current_variables if var not in exclude_list]
@@ -1226,8 +1256,8 @@ if selected_option=="C, metabolic network (including enzyme, mRNA, and metabolit
         net.show("mRNAmetabolite-Enzyme.html")
         HtmlFile = open("mRNAmetabolite-Enzyme.html", 'r')
         components.html(HtmlFile.read(), height=900)
-        st.download_button(label="Download the interactice network",data=open("mRNAmetabolite-Enzyme.html", 'r'),
-                        file_name="mRNAmetabolite-Enzyme.html")           
+        #st.download_button(label="Download the interactice network",data=open("mRNAmetabolite-Enzyme.html", 'r'),
+        #                file_name="mRNAmetabolite-Enzyme.html")           
         
         #Num. regulated reactions
         TraNum=len(Output_ALL1[Output_ALL1["Transcript_number"]>0])
@@ -1566,7 +1596,14 @@ if selected_option=="C, metabolic network (including enzyme, mRNA, and metabolit
                 csv_zip.writestr("List of loops.csv", 
                                 output3.to_csv(index=False))
             with open("mRNAmetabolite-Enzyme.zip", "rb") as file: 
-                st.download_button(label = "Download mRNAmetabolite-Enzyme data",data = file,file_name = "mRNAmetabolite-Enzyme.zip")
+                #st.download_button(label = "Download mRNAmetabolite-Enzyme data",data = file,file_name = "mRNAmetabolite-Enzyme.zip")
+                zip_data = file.read()
+                b64 = base64.b64encode(zip_data).decode()
+                zip_filename = 'mRNAmetabolite-Enzyme.zip'
+                href = f'<a href="data:application/zip;base64,{b64}" download="{zip_filename}">Download the results</a>'
+                st.markdown(href, unsafe_allow_html=True)         
+            if(os.path.isfile('mRNAmetabolite-Enzyme.zip')):
+                os.remove('mRNAmetabolite-Enzyme.zip')           
         del Meta_KEGG2
         #del Meta_KEGG
         del Tran_KEGG
@@ -1876,8 +1913,8 @@ if selected_option=="D, metabolite exchange network (including transporter, mRNA
 
         HtmlFile = open("Transporter.html", 'r')
         components.html(HtmlFile.read(), height=900)
-        st.download_button(label="Download the interactice network",data=open("Transporter.html", 'r'),
-                        file_name="Transporter.html") 
+        #st.download_button(label="Download the interactice network",data=open("Transporter.html", 'r'),
+        #                file_name="Transporter.html") 
               
         fig, ax = plt.subplots(figsize=(3, 3))
         A=len(Num[(Num['OrganTran_number'] ==0) & (Num['BloodMeta_number'] > 0)& (Num['OrganMeta_number'] == 0)])
@@ -1931,7 +1968,14 @@ if selected_option=="D, metabolite exchange network (including transporter, mRNA
             csv_zip.writestr("Metabolite (Organ) only.csv", 
                             Num[(Num['OrganTran_number'] ==0) & (Num['BloodMeta_number'] == 0)& (Num['OrganMeta_number'] > 0)].to_csv(index=False))                   
         with open("Transporter.zip", "rb") as file: 
-            st.download_button(label = "Download transporter data",data = file,file_name = "Transporter.zip")
+            #st.download_button(label = "Download transporter data",data = file,file_name = "Transporter.zip")
+            zip_data = file.read()
+            b64 = base64.b64encode(zip_data).decode()
+            zip_filename = 'Transporter.zip'
+            href = f'<a href="data:application/zip;base64,{b64}" download="{zip_filename}">Download the results</a>'
+            st.markdown(href, unsafe_allow_html=True)
+        if(os.path.isfile('Transporter.zip')):
+            os.remove('Transporter.zip') 
         del ALL
         gc.collect()
         

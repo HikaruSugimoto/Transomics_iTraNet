@@ -1,1 +1,1 @@
-Decreased proteins and associated proteins. Protein-protein interactions were estimated using STRING (https://string-db.org/cgi/download?sessionId=b7GipzHI6zXz).
+Decreased proteins and associated proteins. The association is based on protein-protein interactions and is estimated using the STRING database (https://string-db.org/cgi/download?sessionId=b7GipzHI6zXz).
