@@ -147,6 +147,10 @@ if selected_option=="Home":
     st.write(f.read())
     f.close()
     
+    st.subheader('Help')
+    st.write("If loading bars of interactive networks show 0%, please visit the following URL: https://github.com/WestHealth/pyvis/issues/25")
+    st.write("Download codes and run iTraNet on a local machine: https://github.com/HikaruSugimoto/Transomics_iTraNet")
+    
 #Output
 if selected_option=="A, gene regulatory network (including TF, miRNA, and mRNA) (transcriptome)":
     if Tran is not None:
