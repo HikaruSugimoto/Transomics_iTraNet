@@ -18,3 +18,4 @@ Use the commend below to launch the web application on a local machine.
     
     streamlit run main.py
     
+More details and case studies of iTraNet (doi: https://doi.org/10.1101/2023.11.30.569499)
