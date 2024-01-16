@@ -1925,24 +1925,24 @@ if selected_option=="D, metabolite exchange network (including transporter, mRNA
         F=len(Num[(Num['OrganTran_number'] >0) & (Num['BloodMeta_number'] == 0)& (Num['OrganMeta_number'] > 0)])
         G=len(Num[(Num['OrganTran_number'] >0) & (Num['BloodMeta_number'] > 0)& (Num['OrganMeta_number'] > 0)])
         v=venn3(subsets = (A,B,C,D,E,F,G),
-                set_labels = ('Metabolite (Blood)','Metabolite (Organ)', 'Enzyme mRNA'),
+                set_labels = ('Metabolite (Blood)','Metabolite (Organ)', 'Transporter mRNA'),
                 set_colors=("gray", "gray", "gray"))
         st.pyplot(fig) 
         f=open('./Fig/D3.txt', 'r')
         st.write(f.read())
         
 
-        st.write("Metabolite (Blood) & Metabolite (Organ) & Enzyme mRNA")
+        st.write("Metabolite (Blood) & Metabolite (Organ) & Transporter mRNA")
         st.write(Num[(Num['OrganTran_number'] >0) & (Num['BloodMeta_number'] > 0)& (Num['OrganMeta_number'] > 0)].set_index('Transporter'))      
         st.write("Metabolite (Blood) & Metabolite (Organ) only")
         st.write(Num[(Num['OrganTran_number'] ==0) & (Num['BloodMeta_number'] > 0)& (Num['OrganMeta_number'] > 0)].set_index('Transporter'))      
-        st.write("Metabolite (Blood) & Enzyme mRNA only")
+        st.write("Metabolite (Blood) & Transporter mRNA only")
         st.write(Num[(Num['OrganTran_number'] >0) & (Num['BloodMeta_number'] > 0)& (Num['OrganMeta_number'] == 0)].set_index('Transporter'))      
-        st.write("Enzyme mRNA & Metabolite (Organ) only")
+        st.write("Transporter mRNA & Metabolite (Organ) only")
         st.write(Num[(Num['OrganTran_number'] >0) & (Num['BloodMeta_number'] == 0)& (Num['OrganMeta_number'] > 0)].set_index('Transporter'))      
         st.write("Metabolite (Blood) only")
         st.write(Num[(Num['OrganTran_number'] ==0) & (Num['BloodMeta_number'] > 0)& (Num['OrganMeta_number'] == 0)].set_index('Transporter'))      
-        st.write("Enzyme mRNA only")
+        st.write("Transporter mRNA only")
         st.write(Num[(Num['OrganTran_number'] >0) & (Num['BloodMeta_number'] == 0)& (Num['OrganMeta_number'] == 0)].set_index('Transporter'))      
         st.write("Metabolite (Organ) only")
         st.write(Num[(Num['OrganTran_number'] ==0) & (Num['BloodMeta_number'] == 0)& (Num['OrganMeta_number'] > 0)].set_index('Transporter'))      
@@ -1953,17 +1953,17 @@ if selected_option=="D, metabolite exchange network (including transporter, mRNA
         with zipfile.ZipFile('Transporter.zip', 'x') as csv_zip:
             csv_zip.writestr("Transporter.csv",
                             Num.to_csv(index=False))
-            csv_zip.writestr("Metabolite (Blood) & Metabolite (Organ) & Enzyme mRNA.csv",
+            csv_zip.writestr("Metabolite (Blood) & Metabolite (Organ) & Transporter mRNA.csv",
                             Num[(Num['OrganTran_number'] >0) & (Num['BloodMeta_number'] > 0)& (Num['OrganMeta_number'] > 0)].to_csv(index=False))
             csv_zip.writestr("Metabolite (Blood) & Metabolite (Organ) only.csv", 
                             Num[(Num['OrganTran_number'] ==0) & (Num['BloodMeta_number'] > 0)& (Num['OrganMeta_number'] > 0)].to_csv(index=False))
-            csv_zip.writestr("Metabolite (Blood) & Enzyme mRNA only.csv", 
+            csv_zip.writestr("Metabolite (Blood) & Transporter mRNA only.csv", 
                             Num[(Num['OrganTran_number'] >0) & (Num['BloodMeta_number'] > 0)& (Num['OrganMeta_number'] == 0)].to_csv(index=False)) 
-            csv_zip.writestr("Enzyme mRNA & Metabolite (Organ) only.csv", 
+            csv_zip.writestr("Transporter mRNA & Metabolite (Organ) only.csv", 
                             Num[(Num['OrganTran_number'] >0) & (Num['BloodMeta_number'] == 0)& (Num['OrganMeta_number'] > 0)].to_csv(index=False))
             csv_zip.writestr("Metabolite (Blood) only.csv", 
                             Num[(Num['OrganTran_number'] ==0) & (Num['BloodMeta_number'] > 0)& (Num['OrganMeta_number'] == 0)].to_csv(index=False))        
-            csv_zip.writestr("Enzyme mRNA only.csv", 
+            csv_zip.writestr("Transporter mRNA only.csv", 
                             Num[(Num['OrganTran_number'] >0) & (Num['BloodMeta_number'] == 0)& (Num['OrganMeta_number'] == 0)].to_csv(index=False))
             csv_zip.writestr("Metabolite (Organ) only.csv", 
                             Num[(Num['OrganTran_number'] ==0) & (Num['BloodMeta_number'] == 0)& (Num['OrganMeta_number'] > 0)].to_csv(index=False))                   
