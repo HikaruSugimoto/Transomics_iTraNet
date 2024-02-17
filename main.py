@@ -1644,7 +1644,7 @@ if selected_option=="D, metabolite exchange network (including transporter, mRNA
         #Database
         Name=pd.read_csv("./Database/230228Molecule2Name.csv")
         #CPD=pd.read_csv("./Database/230228CPD2Transporter.csv")
-        ENSMUSG=pd.read_csv("./Database/230228ENSMUSG2Transporter.csv")
+        ENSMUSG=pd.read_csv("./Database/230228ENSMUSG2Transporter.csv").drop_duplicates(subset=['ENSMUSG', 'Transporter'])
         CPDA=pd.read_csv("./Database/MetabolomeTable_AdditionalID.csv")
         Family=pd.read_csv("./Database/230228TransporterFamily.csv")
         
