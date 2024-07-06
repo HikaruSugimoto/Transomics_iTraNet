@@ -19,3 +19,7 @@ Use the commend below to launch the web application on a local machine.
     streamlit run main.py
     
 More details and case studies of iTraNet (doi: https://doi.org/10.1101/2023.11.30.569499)
+
+## Updates
+
+The current version of iTraNet uses databases information available prior to October 2023. Users can update the database information files in the Database folder (https://github.com/HikaruSugimoto/Transomics_iTraNet) on the user’s local machine to ensure that the trans-omics networks are constructed using the most recent data available.  This feature ensures that the generated networks accurately reflect the current state of knowledge in the field, as the databases are continually expanded with newly discovered interactions and annotations. Furthermore, when we update the versions of the databases used in iTraNet in the future, we will notify users through both the web application home page and the GitHub repository. In addition, we plan to maintain the older versions of the databases to ensure that users can access previous data if needed.
